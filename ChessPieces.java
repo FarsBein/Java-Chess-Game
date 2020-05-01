@@ -1,11 +1,11 @@
 public class ChessPieces {
     private int[] startPoint;
     private int[] endPoint;
-    private String[][] board;
+    private String[][] board; //for testing
     public ChessPieces(){
         startPoint = new int[2];
         endPoint = new int[2];
-        board = new String[8][8];
+        board = new String[8][8];//for testing
     }
 
     public int[] getStartPoint(){
@@ -32,13 +32,16 @@ public class ChessPieces {
             System.out.print("\n");
         }
 
-        // black pieces
+        // black pawn pieces
         board[1][0]=" O "; board[1][1]=" O "; board[1][2]=" O "; board[1][3]=" O ";
         board[1][4]=" O "; board[1][5]=" O "; board[1][6]=" O "; board[1][7]=" O ";
+        board[0][2]=" B "; board[0][5]=" B "; //black bishops
 
-        // white pieces
+        // white pawn pieces
         board[6][0]=" X "; board[6][1]=" X "; board[6][2]=" X "; board[6][3]=" X ";
         board[6][4]=" X "; board[6][5]=" X "; board[6][6]=" X "; board[6][7]=" X ";
+        board[7][2]=" B "; board[7][5]=" B "; //white bishops
+
 
     }
 
@@ -80,5 +83,23 @@ public class ChessPieces {
 
         return false;
     }
+
+    public boolean bishops(String color,int[] startPoint, int[] endPoint){
+        if (Math.abs(startPoint[0]-endPoint[0]) == Math.abs(startPoint[1]-endPoint[1])){ // x1 - x2 and y1 - y2 most be equal and whole numbers
+            //testing -------
+            board[startPoint[1]][startPoint[0]] = " . ";
+            board[endPoint[1]][endPoint[0]] = " B ";
+            //--------------- endTest
+            return true;
+        }
+
+        //testing -------
+        board[endPoint[1]][endPoint[0]] = " ? ";
+        //--------------- endTest
+
+        return false;
+    }
+
+    
 
 }

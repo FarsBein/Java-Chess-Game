@@ -24,5 +24,18 @@ public class testChess {
         chessPieces.pawn(color,start,end);
         chessPieces.printBoard();
 
+
+        start = new int[] {2,0};
+        end = new int[] {5,3};
+        color = "black";
+        chessPieces.bishops(color,start,end);
+        chessPieces.printBoard();
+
+        start = new int[] {5,7};
+        end = new int[] {2,4};
+        color = "white";
+        chessPieces.bishops(color,start,end);
+        chessPieces.printBoard();
+
     }
 }
