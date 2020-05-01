@@ -37,5 +37,18 @@ public class testChess {
         chessPieces.bishops(color,start,end);
         chessPieces.printBoard();
 
+
+        start = new int[] {0,0};
+        end = new int[] {0,4};
+        color = "black";
+        chessPieces.Castle(color,start,end);
+        chessPieces.printBoard();
+
+        start = new int[] {7,7};
+        end = new int[] {4,5};
+        color = "white";
+        chessPieces.Castle(color,start,end);
+        chessPieces.printBoard();
+
     }
 }

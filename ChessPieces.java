@@ -36,11 +36,14 @@ public class ChessPieces {
         board[1][0]=" O "; board[1][1]=" O "; board[1][2]=" O "; board[1][3]=" O ";
         board[1][4]=" O "; board[1][5]=" O "; board[1][6]=" O "; board[1][7]=" O ";
         board[0][2]=" B "; board[0][5]=" B "; //black bishops
+        board[0][0]=" C "; board[0][7]=" C "; //black Castles
 
         // white pawn pieces
         board[6][0]=" X "; board[6][1]=" X "; board[6][2]=" X "; board[6][3]=" X ";
         board[6][4]=" X "; board[6][5]=" X "; board[6][6]=" X "; board[6][7]=" X ";
         board[7][2]=" B "; board[7][5]=" B "; //white bishops
+        board[7][0]=" C "; board[7][7]=" C "; //black Castles
+
 
 
     }
@@ -100,6 +103,21 @@ public class ChessPieces {
         return false;
     }
 
-    
+    public boolean Castle(String color,int[] startPoint, int[] endPoint){
+        
+        if (startPoint[0] == endPoint[0] || startPoint[1] == endPoint[1]) {
+            //testing -------
+            board[startPoint[1]][startPoint[0]] = " . ";
+            board[endPoint[1]][endPoint[0]] = " C ";
+            //--------------- endTest
+            return true;
+        }
+
+        //testing -------
+        board[endPoint[1]][endPoint[0]] = " ? ";
+        //--------------- endTest
+
+        return false;
+    }
 
 }
