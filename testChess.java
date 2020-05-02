@@ -45,7 +45,7 @@ public class testChess {
         chessPieces.printBoard();
 
         start = new int[] {7,7};
-        end = new int[] {4,5};
+        end = new int[] {4,7};
         color = "white";
         chessPieces.Castle(color,start,end);
         chessPieces.printBoard();

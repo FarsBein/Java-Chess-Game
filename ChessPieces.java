@@ -37,12 +37,14 @@ public class ChessPieces {
         board[1][4]=" O "; board[1][5]=" O "; board[1][6]=" O "; board[1][7]=" O ";
         board[0][2]=" B "; board[0][5]=" B "; //black bishops
         board[0][0]=" C "; board[0][7]=" C "; //black Castles
+        board[0][1]=" K "; board[0][6]=" K "; //black knight
 
         // white pawn pieces
         board[6][0]=" X "; board[6][1]=" X "; board[6][2]=" X "; board[6][3]=" X ";
         board[6][4]=" X "; board[6][5]=" X "; board[6][6]=" X "; board[6][7]=" X ";
         board[7][2]=" B "; board[7][5]=" B "; //white bishops
-        board[7][0]=" C "; board[7][7]=" C "; //black Castles
+        board[0][0]=" C "; board[0][7]=" C "; //white Castles
+        board[7][1]=" K "; board[7][6]=" K "; //white knight
 
 
 
@@ -117,6 +119,36 @@ public class ChessPieces {
         board[endPoint[1]][endPoint[0]] = " ? ";
         //--------------- endTest
 
+        return false;
+    }
+
+    public boolean queen(String color,int[] startPoint, int[] endPoint){
+        if (Castle(color,startPoint,endPoint) || bishops(color,startPoint,endPoint)){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean king(String color,int[] startPoint, int[] endPoint){ 
+        if (endPoint[0]+1 == startPoint[0] || endPoint[0]-1 == startPoint[0] || endPoint[0] == startPoint[0]){
+            if(endPoint[1]+1 == startPoint[1] || endPoint[1]-1 == startPoint[1] || endPoint[1] == startPoint[1]){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean knight(String color,int[] startPoint, int[] endPoint){ //not sure if there is an optimized equation
+        if (endPoint[0]-3 == startPoint[0] || endPoint[0]+3 == startPoint[0]){
+            if (endPoint[1]-1 == startPoint[1] || endPoint[1]+1 == startPoint[1]){
+                return true;
+            }
+        }
+        if (endPoint[1]-3 == startPoint[1] || endPoint[1]+3 == startPoint[1]){
+            if (endPoint[0]-1 == startPoint[0] || endPoint[0]+1 == startPoint[0]){
+                return true;
+            }
+        }
         return false;
     }
 
