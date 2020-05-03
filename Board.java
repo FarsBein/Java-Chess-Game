@@ -24,17 +24,24 @@ public class Board {
                 // For example: position (1,2) will be 12 but (2,1) will be 21. Thus the order
                 // givens unique values.
                 // This is done for memory purposes.
+
                 // Placing Pawns:
                 if (i == 2) { // If the row is 2.
-                    Pawn whitePawn = new Pawn(true);
-                    whitePawn.setPosition(positionKey);
+                    Pawn whitePawn = new Pawn(true, positionKey);
                     BoardLocations.put(positionKey, whitePawn);
                 } else if (i == 7) { // If the row is 7.
-                    Pawn blackPawn = new Pawn(false);
-                    blackPawn.setPosition(positionKey);
+                    Pawn blackPawn = new Pawn(false, positionKey);
                     BoardLocations.put(positionKey, blackPawn);
                 } else { // In all other cases, put empty.
                     BoardLocations.put(positionKey, empty);
+                }
+                // Placing Castles:
+                if (i == 1 && (j == 1 || j == 8)) { // If (1,1) or (1,8)
+                    Castle whiteCastle = new Castle(true, positionKey);
+                    BoardLocations.put(positionKey, whiteCastle);
+                } else if (i == 8 && (j == 1 || j == 8)) { // If (8,1) or (8,8)
+                    Castle blackCastle = new Castle(false, positionKey);
+                    BoardLocations.put(positionKey, blackCastle);
                 }
             }
         }
@@ -81,14 +88,18 @@ public class Board {
         if (SelectedPiece.canMove(newPos)) {
             Piece toBeReplacedPiece = BoardLocations.get(newPos);
             // Checking for dead pieces.
-            if (!toBeReplacedPiece.getHead().equals(empty.getHead())) { // If the piece to be replaced ISNOT empty:
+            if (toBeReplacedPiece.getColor() == SelectedPiece.getColor()) { // If the selected piece has the same color
+                                                                            // as the other piece.
+                throw new IllegalAccessError("Cannot eat friendly pieces.");
+            } else if (!toBeReplacedPiece.getHead().equals(empty.getHead())) { // If the piece to be replaced ISNOT
+                                                                               // empty:
                 toBeReplacedPiece.setPosition(0); // BoardLocations of all dead pieces is zero.
                 DeadPieces.add(toBeReplacedPiece);
             }
             BoardLocations.replace(oldPos, empty);
             BoardLocations.replace(newPos, SelectedPiece);
         } else { // Will throw an exception if
-            throw new IllegalAccessError("canMove() command returned false. bad parameters xNew and yNew.");
+            throw new IllegalAccessError("Move is illegal.");
         }
     }
 
@@ -106,11 +117,15 @@ class test {
         Board b = new Board();
         b.printBoard();
         System.out.println("----------------------");
-        System.out.println("Moving (7, 5) to (6, 5)");
+        System.out.println("Moving (8, 8) to (8, 7)");
         System.out.println("----------------------");
-        b.movePiece(7, 5, 6, 5);
-        // System.out.println("Before: " + b.getDeadPieces());
-        // System.out.println("After: " + b.getDeadPieces());
+        b.movePiece(8, 8, 8, 2);
         b.printBoard();
+        System.out.println("----------------------");
+        System.out.println("Moving (7, 8) to (6, 8)");
+        System.out.println("----------------------");
+        b.movePiece(7, 8, 6, 8);
+        b.printBoard();
+        System.out.println(b.getDeadPieces());
     }
 }

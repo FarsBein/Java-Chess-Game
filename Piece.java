@@ -1,5 +1,5 @@
 abstract class Piece {
-    protected boolean color; // 1 for White, 0 for Black
+    protected Boolean color; // 1 for White, 0 for Black
     protected String head; // Used for printing. Can be removed in the app.
     protected int position; // To keep track of the piece in the board.
 
@@ -7,7 +7,7 @@ abstract class Piece {
         this.position = BoardPosition;
     }
 
-    public boolean getColor() {
+    public Boolean getColor() {
         return this.color;
     }
 
@@ -20,43 +20,41 @@ abstract class Piece {
     }
 
     // Abstract methods all classes must have:
-    abstract boolean canMove(int newPosition);
+    abstract Boolean canMove(int newPosition);
 
 }
 
 class EmptyPiece extends Piece {
     public EmptyPiece() {
         this.head = ".";
+        this.color = null; // An empty position has a null color.
     }
 
     @Override
-    boolean canMove(int newPosition) {
+    Boolean canMove(int newPosition) {
         // TODO Auto-generated method stub
         return false;
     }
 }
 
 class Pawn extends Piece {
-    boolean FirstStepChecker; // Used to know if the pawn can more twice for the first step.
+    Boolean FirstStepChecker; // Used to know if the pawn can more twice for the first step.
 
-    public Pawn(boolean assignedColor) {
+    public Pawn(Boolean assignedColor, int BoardPosition) {
         FirstStepChecker = true;
+        this.color = assignedColor;
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        if (assignedColor == true) { // if White
-            this.color = assignedColor;
+        if (assignedColor) { // If white:
             this.head = "p";
         } else {
-            this.color = false;
             this.head = "d";
         }
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        setPosition(BoardPosition); // Give location for the Piece.
     }
 
-    /**
-     * 
-     */
     @Override
-    boolean canMove(int newPosition) {
+    Boolean canMove(int newPosition) {
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // This is the best way to implement arrays into the one integer method used in
         // board. What is happening for the second integer is its turning into a string,
@@ -65,7 +63,7 @@ class Pawn extends Piece {
         int[] startPoint = { (this.position / 10) % 10,
                 Integer.parseInt(Integer.toString(this.position).split("")[1]) };
         // TODO Auto-generated method stub
-        if (color == true) { // 1//
+        if (!color) { // 1//
             if (endPoint[1] + 1 == startPoint[1] || (startPoint[1] == 6 && endPoint[1] + 2 == startPoint[1])) { // 2//
                 if (endPoint[0] == startPoint[0] || endPoint[0] + 1 == startPoint[0]
                         || endPoint[0] - 1 == startPoint[0]) {// 3//
@@ -82,6 +80,33 @@ class Pawn extends Piece {
         }
         return false;
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    }
+
+}
+
+class Castle extends Piece {
+    public Castle(Boolean assignedColor, int BoardPosition) {
+        this.color = assignedColor;
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        if (assignedColor) { // If white:
+            this.head = "M";
+        } else {
+            this.head = "W";
+        }
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        setPosition(BoardPosition);
+    }
+
+    @Override
+    Boolean canMove(int newPosition) {
+        // TODO Auto-generated method stub
+        int[] endPoint = { (newPosition / 10) % 10, Integer.parseInt(Integer.toString(newPosition).split("")[1]) };
+        int[] startPoint = { (this.position / 10) % 10,
+                Integer.parseInt(Integer.toString(this.position).split("")[1]) };
+        if (startPoint[0] == endPoint[0] || startPoint[1] == endPoint[1]) {
+            return true;
+        }
+        return false;
     }
 
 }
