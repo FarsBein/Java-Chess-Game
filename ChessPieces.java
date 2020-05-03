@@ -1,7 +1,9 @@
+// "for testing" means it will be removed
+
 public class ChessPieces {
     //for testing--------------
-    private int[] startPoint; // current position in the board array in x is index 0 and y is index 1
-    private int[] endPoint;  // final position 
+    private int[] startPoint; // Piece current position in the board array, x is index 0 and y is index 1
+    private int[] endPoint;  // final position, destination
     private String[][] board;
     // ------------------------
 
@@ -65,12 +67,12 @@ public class ChessPieces {
         board[loc[1]][loc[0]] = " # ";
     }
 
-    // ------------------------------- endTest
+    // ------------------------------- 
 
 
     //pawn 
     //1// checks if the piece is white because they face different side of the board and require different calculations
-    //2// to move foreword from the white side you -1 so endpoint[1](y) + 1 will get us back to the starting position
+    //2// to move a pawn foreword from the white side you -1 so endpoint[1](y) + 1 will get us back to the starting position startPoint[1]
     //3// pawns can move in an angle to take a piece but only forward so check if endPoint[0] -1 or +1 or +0 get us back to startPoint
     //4// black same thing but because they face different side of the board they require the opposite calculations
     public boolean pawn(String color,int[] startPoint, int[] endPoint){
@@ -86,7 +88,7 @@ public class ChessPieces {
                     return true;
                 }
             } 
-        } else {
+        } else {//4//
             if (endPoint[1] - 1 == startPoint[1] ||(startPoint[1] == 1 && endPoint[1] - 2 == startPoint[1])){
                 if (endPoint[0] == startPoint[0] || endPoint[0]+1 == startPoint[0] || endPoint[0]-1 == startPoint[0]){
                     
@@ -109,7 +111,7 @@ public class ChessPieces {
 
 
     //bishops
-    //1// x1 - x2 = y1 - y2 most be equal since  bishops moves side way
+    //1// x1 - x2 = y1 - y2 most be equal since  bishops moves side way ( you can move side way only by adding an equal amount to both y and x)
     public boolean bishops(String color,int[] startPoint, int[] endPoint){
         if (Math.abs(startPoint[0]-endPoint[0]) == Math.abs(startPoint[1]-endPoint[1])){ //1//
             
@@ -153,7 +155,7 @@ public class ChessPieces {
     //queen
     // queen is basically castle and bishops smooched together 
     // but it can only move in one direction at a time 
-    // so I  check if it moves using Castle or bishops path
+    // so I check if it moves using Castle or bishops path
     public boolean queen(String color,int[] startPoint, int[] endPoint){
         if (Castle(color,startPoint,endPoint) || bishops(color,startPoint,endPoint)){
             return true;
@@ -174,10 +176,10 @@ public class ChessPieces {
 
     //knight
     // since knight has only 8 possible distentions like the king I checked for all of them
-    //1// knight moves in x+3 or x-3 away form starting point 
+    //1// if knight moves x+3 or x-3 away form starting point 
     //2// then y has to be y+1 or y-1 away from starting point 
-    //3// knight moves in y+3 or y-3 away form starting point
-    //4// then y has to be x+1 or x-1 away from starting point 
+    //3// if knight moves y+3 or y-3 away form starting point
+    //4// then x has to be x+1 or x-1 away from starting point 
     public boolean knight(String color,int[] startPoint, int[] endPoint){ 
         if (endPoint[0]-3 == startPoint[0] || endPoint[0]+3 == startPoint[0]){//1//
             if (endPoint[1]-1 == startPoint[1] || endPoint[1]+1 == startPoint[1]){//2//
