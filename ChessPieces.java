@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 // "for testing" means it will be removed
 
 public class ChessPieces {
@@ -74,22 +76,32 @@ public class ChessPieces {
     //1// checks if the piece is white because they face different side of the board and require different calculations
     //2// to move a pawn foreword from the white side you -1 so endpoint[1](y) + 1 will get us back to the starting position startPoint[1]
     //3// pawns can move in an angle to take a piece but only forward so check if endPoint[0] -1 or +1 or +0 get us back to startPoint
-    //4// black same thing but because they face different side of the board they require the opposite calculations
+    //4// startPoint[1] == 6 && endPoint[1] + 2 == startPoint[1] checks if the pawn is in the first row if yes it can move +2, fist row for white is 6 and black is 1
+    //5// black same thing but because they face different side of the board they require the opposite calculations
     public boolean pawn(String color,int[] startPoint, int[] endPoint){
         if(color == "white" || color == "w"){  //1//
-            if (endPoint[1] + 1 == startPoint[1]||(startPoint[1] == 6 && endPoint[1] + 2 == startPoint[1])){ //2//
+            if (endPoint[1] + 1 == startPoint[1]){ //2//
                 if (endPoint[0] == startPoint[0] || endPoint[0]+1 == startPoint[0] || endPoint[0]-1 == startPoint[0]){//3//
                     
                     //testing -------
                     board[startPoint[1]][startPoint[0]] = " . ";
                     board[endPoint[1]][endPoint[0]] = " X ";
-                    //--------------- endTest
+                    //--------------- 
 
                     return true;
                 }
-            } 
-        } else {//4//
-            if (endPoint[1] - 1 == startPoint[1] ||(startPoint[1] == 1 && endPoint[1] - 2 == startPoint[1])){
+            }
+            if(startPoint[1] == 6 && endPoint[1] + 2 == startPoint[1]){//4//
+
+                //testing ------- 
+                board[startPoint[1]][startPoint[0]] = " . ";
+                board[endPoint[1]][endPoint[0]] = " X ";
+                //--------------- 
+
+                return true;
+            }
+        } else {//5//
+            if (endPoint[1] - 1 == startPoint[1]){
                 if (endPoint[0] == startPoint[0] || endPoint[0]+1 == startPoint[0] || endPoint[0]-1 == startPoint[0]){
                     
                     //testing -------
@@ -99,6 +111,15 @@ public class ChessPieces {
 
                     return true;
                 }
+            }
+            if(startPoint[1] == 1 && endPoint[1] - 2 == startPoint[1]){
+
+                //testing ------- 
+                board[startPoint[1]][startPoint[0]] = " . ";
+                board[endPoint[1]][endPoint[0]] = " X ";
+                //--------------- 
+
+                return true;
             }
         }
 
@@ -193,5 +214,7 @@ public class ChessPieces {
         }
         return false;
     }
+
+
 
 }
