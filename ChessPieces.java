@@ -1,13 +1,20 @@
 public class ChessPieces {
-    private int[] startPoint;
-    private int[] endPoint;
-    private String[][] board; //for testing
+    //for testing--------------
+    private int[] startPoint; // current position in the board array in x is index 0 and y is index 1
+    private int[] endPoint;  // final position 
+    private String[][] board;
+    // ------------------------
+
+    // this can be empty
     public ChessPieces(){
+        //for testing--------------
         startPoint = new int[2];
         endPoint = new int[2];
-        board = new String[8][8];//for testing
+        board = new String[8][8];
+        // ------------------------
     }
 
+    // for testing --------------------
     public int[] getStartPoint(){
         return startPoint;
     }
@@ -23,8 +30,11 @@ public class ChessPieces {
             System.out.print("\n");
         }
     }
+    //---------------------------------
+
+
     // for testing --------------------
-    public void resetBoard(){
+    public void resetBoard(){ // adds symbols to the empty board for testing 
         for (int i=0; i < board.length; i++){
             for (int j=0; j < board[0].length; j++){
                 board[i][j]=" . ";
@@ -50,15 +60,23 @@ public class ChessPieces {
 
     }
 
+    // add pieces if need it for testing
     public void createPiece(int[] loc){
         board[loc[1]][loc[0]] = " # ";
     }
+
     // ------------------------------- endTest
 
+
+    //pawn 
+    //1// checks if the piece is white because they face different side of the board and require different calculations
+    //2// to move foreword from the white side you -1 so endpoint[1](y) + 1 will get us back to the starting position
+    //3// pawns can move in an angle to take a piece but only forward so check if endPoint[0] -1 or +1 or +0 get us back to startPoint
+    //4// black same thing but because they face different side of the board they require the opposite calculations
     public boolean pawn(String color,int[] startPoint, int[] endPoint){
-        if(color == "white" || color == "w"){
-            if (endPoint[1] + 1 == startPoint[1]||(startPoint[1] == 6 && endPoint[1] + 2 == startPoint[1])){
-                if (endPoint[0] == startPoint[0] || endPoint[0]+1 == startPoint[0] || endPoint[0]-1 == startPoint[0]){
+        if(color == "white" || color == "w"){  //1//
+            if (endPoint[1] + 1 == startPoint[1]||(startPoint[1] == 6 && endPoint[1] + 2 == startPoint[1])){ //2//
+                if (endPoint[0] == startPoint[0] || endPoint[0]+1 == startPoint[0] || endPoint[0]-1 == startPoint[0]){//3//
                     
                     //testing -------
                     board[startPoint[1]][startPoint[0]] = " . ";
@@ -89,12 +107,17 @@ public class ChessPieces {
         return false;
     }
 
+
+    //bishops
+    //1// x1 - x2 = y1 - y2 most be equal since  bishops moves side way
     public boolean bishops(String color,int[] startPoint, int[] endPoint){
-        if (Math.abs(startPoint[0]-endPoint[0]) == Math.abs(startPoint[1]-endPoint[1])){ // x1 - x2 and y1 - y2 most be equal and whole numbers
+        if (Math.abs(startPoint[0]-endPoint[0]) == Math.abs(startPoint[1]-endPoint[1])){ //1//
+            
             //testing -------
             board[startPoint[1]][startPoint[0]] = " . ";
             board[endPoint[1]][endPoint[0]] = " B ";
             //--------------- endTest
+            
             return true;
         }
 
@@ -105,13 +128,18 @@ public class ChessPieces {
         return false;
     }
 
+
+    //Castle
+    // castle can  move in the x OR y direction so it will have to maintain one of its values x or y
     public boolean Castle(String color,int[] startPoint, int[] endPoint){
         
         if (startPoint[0] == endPoint[0] || startPoint[1] == endPoint[1]) {
+            
             //testing -------
             board[startPoint[1]][startPoint[0]] = " . ";
             board[endPoint[1]][endPoint[0]] = " C ";
             //--------------- endTest
+            
             return true;
         }
 
@@ -122,6 +150,10 @@ public class ChessPieces {
         return false;
     }
 
+    //queen
+    // queen is basically castle and bishops smooched together 
+    // but it can only move in one direction at a time 
+    // so I  check if it moves using Castle or bishops path
     public boolean queen(String color,int[] startPoint, int[] endPoint){
         if (Castle(color,startPoint,endPoint) || bishops(color,startPoint,endPoint)){
             return true;
@@ -129,6 +161,8 @@ public class ChessPieces {
         return false;
     }
 
+    //king
+    // could not come up with an optimized algorithm so i just checked for all 8 possible distentions
     public boolean king(String color,int[] startPoint, int[] endPoint){ 
         if (endPoint[0]+1 == startPoint[0] || endPoint[0]-1 == startPoint[0] || endPoint[0] == startPoint[0]){
             if(endPoint[1]+1 == startPoint[1] || endPoint[1]-1 == startPoint[1] || endPoint[1] == startPoint[1]){
@@ -138,14 +172,20 @@ public class ChessPieces {
         return false;
     }
 
-    public boolean knight(String color,int[] startPoint, int[] endPoint){ //not sure if there is an optimized equation
-        if (endPoint[0]-3 == startPoint[0] || endPoint[0]+3 == startPoint[0]){
-            if (endPoint[1]-1 == startPoint[1] || endPoint[1]+1 == startPoint[1]){
+    //knight
+    // since knight has only 8 possible distentions like the king I checked for all of them
+    //1// knight moves in x+3 or x-3 away form starting point 
+    //2// then y has to be y+1 or y-1 away from starting point 
+    //3// knight moves in y+3 or y-3 away form starting point
+    //4// then y has to be x+1 or x-1 away from starting point 
+    public boolean knight(String color,int[] startPoint, int[] endPoint){ 
+        if (endPoint[0]-3 == startPoint[0] || endPoint[0]+3 == startPoint[0]){//1//
+            if (endPoint[1]-1 == startPoint[1] || endPoint[1]+1 == startPoint[1]){//2//
                 return true;
             }
         }
-        if (endPoint[1]-3 == startPoint[1] || endPoint[1]+3 == startPoint[1]){
-            if (endPoint[0]-1 == startPoint[0] || endPoint[0]+1 == startPoint[0]){
+        if (endPoint[1]-3 == startPoint[1] || endPoint[1]+3 == startPoint[1]){//3//
+            if (endPoint[0]-1 == startPoint[0] || endPoint[0]+1 == startPoint[0]){//4//
                 return true;
             }
         }
