@@ -1,35 +1,40 @@
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
 import java.util.TreeMap;
 
 public class Board {
     // This is a TreeMap inside a TreeMap. Consider the first integer as x, and the
     // second as y.
-    private TreeMap<Integer, String> Positions; // The pieces will be presented by a unique string for now.
-    private Set<String> DeadPieces;
+    private TreeMap<Integer, Piece> BoardLocations; // The pieces will be presented by a unique string for now.
+    private LinkedList<Piece> DeadPieces;
+    EmptyPiece empty;
 
     /**
      * Constructor of the Board.
      */
     public Board() {
-        // Initializing the Positions TreeMap.
-        Positions = new TreeMap<Integer, String>();
-        DeadPieces = new HashSet<String>();
+        // Initializing the fields.
+        BoardLocations = new TreeMap<Integer, Piece>();
+        DeadPieces = new LinkedList<Piece>();
+        empty = new EmptyPiece();
         for (int i = 1; i < 9; i++) {
             for (int j = 1; j < 9; j++) {
-                int keyInteger = (i * 10) + j;
+                int positionKey = (i * 10) + j;
                 // The way the key works is as follows: for every x, multiply x byt 10 and add
                 // by y. This will make each integer unique given 2 integer inputs.
                 // For example: position (1,2) will be 12 but (2,1) will be 21. Thus the order
                 // givens unique values.
                 // This is done for memory purposes.
-
-                // The way this will be done for now is "O" pieces will be placed in even x and
-                // y values, and "." in the others.
-                if (i % 2 == 0 && j % 2 == 0) {
-                    Positions.put(keyInteger, "O");
-                } else {
-                    Positions.put(keyInteger, ".");
+                // Placing Pawns:
+                if (i == 2) { // If the row is 2.
+                    Pawn whitePawn = new Pawn(true);
+                    whitePawn.setPosition(positionKey);
+                    BoardLocations.put(positionKey, whitePawn);
+                } else if (i == 7) { // If the row is 7.
+                    Pawn blackPawn = new Pawn(false);
+                    blackPawn.setPosition(positionKey);
+                    BoardLocations.put(positionKey, blackPawn);
+                } else { // In all other cases, put empty.
+                    BoardLocations.put(positionKey, empty);
                 }
             }
         }
@@ -52,37 +57,46 @@ public class Board {
     private void printLine(int lineNumber) {
         System.out.print(lineNumber + "| "); // Printing the line number at the left of the board.
         for (int j = 1; j < 9; j++) { // Looping through each y value.
-            System.out.print(Positions.get(lineNumber * 10 + j) + " ");
+            System.out.print(BoardLocations.get(lineNumber * 10 + j).getHead() + " ");
         }
     }
 
     /**
-     * moves a piece given its location to a new location and replaces the current
-     * location with "." empty space.
+     *
+     * moves a piece if possible given its location to a new location and replaces
+     * the current location with "." empty space. Will throw an exception if xNew
+     * and yNew have illegal integers based of the piece in the xCurrent, yCurrent
+     * piece.
      * 
-     * @param xCurrent current x location.
-     * @param yCurrent current y location.
-     * @param xNew     new x location.
-     * @param yNew     new y location.
+     * @param xCurrent
+     * @param yCurrent
+     * @param xNew
+     * @param yNew
+     * @throws IllegalAccessError
      */
-    public void movePiece(int xCurrent, int yCurrent, int xNew, int yNew) {
+    public void movePiece(int xCurrent, int yCurrent, int xNew, int yNew) throws IllegalAccessError {
         int oldPos = xCurrent * 10 + yCurrent;
         int newPos = xNew * 10 + yNew;
-        String SelectedPiece = Positions.get(oldPos);
-        String toBeReplacedPiece = Positions.get(newPos);
-        // Checking for dead pieces.
-        if (!toBeReplacedPiece.equals(".")) { // If the piece to be replaced ISNOT empty:
-            DeadPieces.add(toBeReplacedPiece);
+        Piece SelectedPiece = BoardLocations.get(oldPos);
+        if (SelectedPiece.canMove(newPos)) {
+            Piece toBeReplacedPiece = BoardLocations.get(newPos);
+            // Checking for dead pieces.
+            if (!toBeReplacedPiece.getHead().equals(empty.getHead())) { // If the piece to be replaced ISNOT empty:
+                toBeReplacedPiece.setPosition(0); // BoardLocations of all dead pieces is zero.
+                DeadPieces.add(toBeReplacedPiece);
+            }
+            BoardLocations.replace(oldPos, empty);
+            BoardLocations.replace(newPos, SelectedPiece);
+        } else { // Will throw an exception if
+            throw new IllegalAccessError("canMove() command returned false. bad parameters xNew and yNew.");
         }
-        Positions.replace(oldPos, ".");
-        Positions.replace(newPos, SelectedPiece);
     }
 
     /**
      * 
      * @return The set of dead pieces of the board thus far.
      */
-    public Set<String> getDeadPieces() {
+    public LinkedList<Piece> getDeadPieces() {
         return DeadPieces;
     }
 }
@@ -92,16 +106,11 @@ class test {
         Board b = new Board();
         b.printBoard();
         System.out.println("----------------------");
-        System.out.println("Moving (8, 8) to (1, 1)");
+        System.out.println("Moving (7, 5) to (6, 5)");
         System.out.println("----------------------");
-        b.movePiece(8, 8, 1, 1);
-        b.printBoard();
-        System.out.println("----------------------");
-        System.out.println("Moving (4, 4) to (2, 2) and seeing dead pieces");
-        System.out.println("----------------------");
-        System.out.println("Before: " + b.getDeadPieces());
-        b.movePiece(4, 4, 2, 2);
-        System.out.println("After: " + b.getDeadPieces());
+        b.movePiece(7, 5, 6, 5);
+        // System.out.println("Before: " + b.getDeadPieces());
+        // System.out.println("After: " + b.getDeadPieces());
         b.printBoard();
     }
 }
