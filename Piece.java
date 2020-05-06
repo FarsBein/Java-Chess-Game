@@ -84,6 +84,7 @@ class Pawn extends Piece {
         }
         return false;
 }
+}
 
 class Castle extends Piece {
     public Castle(Boolean assignedColor, int currentPosition) {
@@ -96,8 +97,6 @@ class Castle extends Piece {
 
         setPosition(currentPosition);
     }
-
-    public Castle(){} // for queen
 
     @Override
     Boolean canMove(int newPosition) {
@@ -125,8 +124,6 @@ class Bishop extends Piece{
         setPosition(currentPosition);
     }
 
-    public Bishop(){} // for queen check
-
 	@Override
 	Boolean canMove(int newPosition) {
         int x1 = getX(position); // current position
@@ -139,7 +136,6 @@ class Bishop extends Piece{
         }
         return false;
     }
-	}
 }
 
 

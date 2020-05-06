@@ -43,6 +43,42 @@ public class Board {
                     Castle blackCastle = new Castle(false, positionKey);
                     BoardLocations.put(positionKey, blackCastle);
                 }
+
+                // Placing Bishops:
+                if (i == 1 && (j == 3 || j == 6)) {
+                    Bishop whiteBishop = new Bishop(true, positionKey);
+                    BoardLocations.put(positionKey, whiteBishop);
+                } else if (i == 8 && (j == 3 || j == 6)) {
+                    Bishop blackBishop = new Bishop(false, positionKey);
+                    BoardLocations.put(positionKey, blackBishop);
+                }
+
+                // Placing Queen:
+                if (i == 1 && (j == 5)) {
+                    Queen whiteQueen = new Queen(true, positionKey);
+                    BoardLocations.put(positionKey, whiteQueen);
+                } else if (i == 8 && (j == 5)) {
+                    Queen blackQueen = new Queen(false, positionKey);
+                    BoardLocations.put(positionKey, blackQueen);
+                }
+
+                // Placing King:
+                if (i == 1 && (j == 4)) {
+                    King whiteKing = new King(true, positionKey);
+                    BoardLocations.put(positionKey, whiteKing);
+                } else if (i == 8 && (j == 4)) {
+                    King blackKing = new King(false, positionKey);
+                    BoardLocations.put(positionKey, blackKing);
+                }
+
+                // Placing Knight:
+                if (i == 1 && (j == 2 || j == 7)) {
+                    Knight whiteKnight = new Knight(true, positionKey);
+                    BoardLocations.put(positionKey, whiteKnight);
+                } else if (i == 8 && (j == 2 || j == 7)) {
+                    Knight blackKnight = new Knight(false, positionKey);
+                    BoardLocations.put(positionKey, blackKnight);
+                }
             }
         }
     }
@@ -124,8 +160,8 @@ class test {
         System.out.println("----------------------");
         System.out.println("Moving (7, 8) to (6, 8)");
         System.out.println("----------------------");
-        b.movePiece(7, 8, 6, 8);
-        b.printBoard();
+        //b.movePiece(7, 8, 6, 8);
+        //b.printBoard();
         System.out.println(b.getDeadPieces());
     }
 }
