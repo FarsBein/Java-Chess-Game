@@ -79,7 +79,7 @@ public class ChessPieces {
     //4// startPoint[1] == 6 && endPoint[1] + 2 == startPoint[1] checks if the pawn is in the first row if yes it can move +2, fist row for white is 6 and black is 1
     //5// black same thing but because they face different side of the board they require the opposite calculations
     public boolean pawn(String color,int[] startPoint, int[] endPoint){
-        if(color == "white" || color == "w"){  //1//
+        if(color == "white" || color == "w"){ //1//
             if (endPoint[1] + 1 == startPoint[1]){ //2//
                 if (endPoint[0] == startPoint[0] || endPoint[0]+1 == startPoint[0] || endPoint[0]-1 == startPoint[0]){//3//
                     
