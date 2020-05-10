@@ -34,7 +34,7 @@ abstract class Piece {
 
 class EmptyPiece extends Piece {
     public EmptyPiece() {
-        this.head = " . ";
+        this.head = " .";
         this.color = null; // An empty position has a null color.
     }
 

@@ -1,4 +1,5 @@
 import java.util.LinkedList;
+import java.util.Scanner;
 import java.util.TreeMap;
 
 public class Board {
@@ -91,8 +92,8 @@ public class Board {
             printLine(i); // Printing the line.
             System.out.println(); // Printing a new line
         }
-        System.out.println("   ---------------");
-        System.out.println("   1 2 3 4 5 6 7 8");
+        System.out.println("   - - - - - - - - - - - -");
+        System.out.println("   1  2  3  4  5  6  7  8");
     }
 
     // Since each line can be denoted by its number. This helper method prints a
@@ -117,12 +118,10 @@ public class Board {
      * @param yNew
      * @throws IllegalAccessError
      */
-    public void movePiece(int xCurrent, int yCurrent, int xNew, int yNew) throws IllegalAccessError {
-        int oldPos = xCurrent * 10 + yCurrent;
-        int newPos = xNew * 10 + yNew;
-        Piece SelectedPiece = BoardLocations.get(oldPos);
-        if (SelectedPiece.canMove(newPos)) {
-            Piece toBeReplacedPiece = BoardLocations.get(newPos);
+    public void movePiece(int Current, int New) throws IllegalAccessError {
+        Piece SelectedPiece = BoardLocations.get(Current);
+        if (SelectedPiece.canMove(New)) {
+            Piece toBeReplacedPiece = BoardLocations.get(New);
             // Checking for dead pieces.
             if (toBeReplacedPiece.getColor() == SelectedPiece.getColor()) { // If the selected piece has the same color
                                                                             // as the other piece.
@@ -132,8 +131,8 @@ public class Board {
                 toBeReplacedPiece.setPosition(0); // BoardLocations of all dead pieces is zero.
                 DeadPieces.add(toBeReplacedPiece);
             }
-            BoardLocations.replace(oldPos, empty);
-            BoardLocations.replace(newPos, SelectedPiece);
+            BoardLocations.replace(Current, empty);
+            BoardLocations.replace(New, SelectedPiece);
         } else { // Will throw an exception if
             throw new IllegalAccessError("Move is illegal.");
         }
@@ -150,18 +149,21 @@ public class Board {
 
 class test {
     public static void main(String[] args) {
-        Board b = new Board();
-        b.printBoard();
-        System.out.println("----------------------");
-        System.out.println("Moving (8, 8) to (8, 7)");
-        System.out.println("----------------------");
-        b.movePiece(8, 8, 8, 2);
-        b.printBoard();
-        System.out.println("----------------------");
-        System.out.println("Moving (7, 8) to (6, 8)");
-        System.out.println("----------------------");
-        //b.movePiece(7, 8, 6, 8);
-        //b.printBoard();
-        System.out.println(b.getDeadPieces());
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("type whatever|> ");
+        System.out.println(scanner.hasNext()&&!scanner.hasNextInt());
+        // Board b = new Board();
+        // b.printBoard();
+        // System.out.println("----------------------");
+        // System.out.println("Moving (8, 8) to (8, 7)");
+        // System.out.println("----------------------");
+        // //b.movePiece(8, 8, 8, 2);
+        // b.printBoard();
+        // System.out.println("----------------------");
+        // System.out.println("Moving (7, 8) to (6, 8)");
+        // System.out.println("----------------------");
+        // //b.movePiece(7, 8, 6, 8);
+        // //b.printBoard();
+        // System.out.println(b.getDeadPieces());
     }
 }
